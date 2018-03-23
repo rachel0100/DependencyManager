@@ -40,15 +40,16 @@ public class PackageManager
 	/* Adds package. */
 	public void addPackage(String packageName) 
 	{
-		if ((!isInstalled(packageName)) && (isAvailable(packageName))) {					      // if uninstalled and available
-			ArrayList<String> dependencies = this.centralRepoDepList.get(packageName);		// get package dependencies
-			for (String u : dependencies) {										// for each dependency child
-				topologicalOrder(u, true);
+		// if uninstalled and available
+		if ((!isInstalled(packageName)) && (isAvailable(packageName))) {
+			ArrayList<String> dependencies = this.centralRepoDepList.get(packageName);	// get package dependencies
+			for (String u : dependencies) {
+				topologicalOrder(u, true);				// for each dependency child, retreive their children
 			}
-			this.cache.add(packageName);											// cache parent package
-			this.stack.push(packageName);											// push parent package to stack
-			installPackage();																  // install packages on the stack
-			this.stack.clear();																// clear the stack
+			this.cache.add(packageName);				// cache parent package
+			this.stack.push(packageName);				// push parent package to stack
+			installPackage();							// install packages on the stack
+			this.stack.clear();							// clear the stack
 		}
 	}
 
@@ -74,9 +75,9 @@ public class PackageManager
 		}
 		stack.push(packageName);
 		if (addToCache) {
-			this.cache.add(packageName);											// if installing packages, cache
+			this.cache.add(packageName);				// if installing packages, cache
 		} else {
-			this.cache.remove(packageName);										// if uninstalling packages, remove from cache
+			this.cache.remove(packageName);				// if uninstalling packages, remove from cache
 		}
 	}
 
